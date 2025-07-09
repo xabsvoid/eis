@@ -1,0 +1,5 @@
+package: http
+output: internal/app/infrastructure/transport/http/handlers.gen.go
+generate:
+  models: true
+  echo-server: true

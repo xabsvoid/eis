@@ -1,0 +1,416 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Event Invitation System API",
+        "version": "v1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/events": {
+            "get": {
+                "summary": "Get events list",
+                "responses": {
+                    "200": {
+                        "description": "Events returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Events"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create new event",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Event created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{event_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "event_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get event",
+                "responses": {
+                    "200": {
+                        "description": "Event returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete event",
+                "responses": {
+                    "200": {
+                        "description": "Event deleted successfully"
+                    }
+                }
+            }
+        },
+        "/events/{event_id}/participants": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "event_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get participants list",
+                "responses": {
+                    "200": {
+                        "description": "Participants returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Participants"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create new participant",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Person"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Participant created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Participant"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/participants/{participant_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "participant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get participant",
+                "responses": {
+                    "200": {
+                        "description": "Participant returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Participant"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete participant",
+                "responses": {
+                    "200": {
+                        "description": "Participant deleted successfully"
+                    }
+                }
+            }
+        },
+        "/participants/{participant_id}/replacement": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "participant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Setup replacement",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Replacement"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Replacement setup successfully"
+                    }
+                }
+            }
+        },
+        "/participants/{participant_id}/confirm": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "participant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Setup confirm",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Nullable"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Confirm setup successfully"
+                    }
+                }
+            }
+        },
+        "/participants/{participant_id}/check-in": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "participant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Setup check-in",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Nullable"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Check-in setup successfully"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Nullable": {
+                "type": "object",
+                "properties": {
+                    "exist": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Event": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Events": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Event"
+                }
+            },
+            "Person": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "middle_name": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Replacement": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Nullable"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Person"
+                    }
+                    ]
+            },
+            "Participant": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "event_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "replacement": {
+                                "$ref": "#/components/schemas/Replacement"
+                            },
+                            "confirmation": {
+                                "$ref": "#/components/schemas/Nullable"
+                            },
+                            "check-in": {
+                                "$ref": "#/components/schemas/Nullable"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/Person"
+                    }
+                ]
+            },
+            "Participants": {
+                "type": "object",
+                "properties": {
+                    "participants": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Participant"
+                        }
+                    },
+                    "statistics": {
+                        "$ref": "#/components/schemas/Statistics"
+                    }
+                }
+            },
+            "Statistics": {
+                "type": "object",
+                "properties": {
+                    "invited": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "confirmed": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "replaced": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "checked_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "not_confirmed": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "not_checked_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            }
+        }
+    }
+}
