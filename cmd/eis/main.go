@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	host := flag.String("host", "localhost:8080", "server host")
+	host := flag.String("host", ":8080", "server host")
 	flag.Parse()
 
 	inMemRepository := inmem.NewInMem()
