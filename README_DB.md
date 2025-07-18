@@ -49,3 +49,8 @@ Rollback the last migration:
 ```
 make migrate-down
 ```
+
+Rollback all migrations:
+```
+make migrate-reset
+```
