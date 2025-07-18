@@ -1,0 +1,11 @@
+# database
+POSTGRES_USER=example_word
+POSTGRES_PASSWORD=example_word
+POSTGRES_DB=example_word
+POSTGRES_PORT=9999
+POSTGRES_HOST=example_word
+
+# admin
+PGADMIN_DEFAULT_EMAIL=example_user@user.com
+PGADMIN_DEFAULT_PASSWORD=example_word
+PGADMIN_PORT=9999
