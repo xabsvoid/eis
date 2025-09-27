@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"log"
+	"os"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
@@ -12,14 +13,29 @@ import (
 	"github.com/xabsvoid/eis/internal/app/infrastructure/transport/http"
 )
 
+const (
+	EnvDSN  = "DSN"
+	EnvHost = "HOST"
+)
+
 func main() {
-	dsn := flag.String("dsn", "postgres://user:pwd@host:5432/db", "dsn db")
-	host := flag.String("host", ":8080", "server host")
+	flagDSN := flag.String("dsn", "postgres://user:pwd@host:5432/db", "dsn db")
+	flagHost := flag.String("host", ":8080", "server host")
 	flag.Parse()
+
+	dsn := os.Getenv(EnvDSN)
+	if flagDSN != nil {
+		dsn = *flagDSN
+	}
+
+	host := os.Getenv(EnvHost)
+	if flagHost != nil {
+		host = *flagHost
+	}
 
 	ctx := context.Background()
 
-	conn, err := pgx.Connect(ctx, *dsn)
+	conn, err := pgx.Connect(ctx, dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +50,7 @@ func main() {
 
 	http.RegisterHandlers(httpServer, httpHandlers)
 
-	err = httpServer.Start(*host)
+	err = httpServer.Start(host)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -13,4 +13,4 @@ FROM alpine:3.22.0
 
 COPY --from=build /app/eis /eis
 
-ENTRYPOINT ["./eis", "-dsn", "${EIS_HOST}"]
+ENTRYPOINT ["./eis"]

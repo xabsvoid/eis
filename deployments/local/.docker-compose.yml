@@ -76,7 +76,7 @@ services:
     build:
       dockerfile: eis.dockerfile
     environment:
-      EIS_HOST: ${EIS_HOST}
+      DSN: ${EIS_DSN}
     ports:
       - "${EXPOSE_EIS_PORT}:8080"
     volumes:
