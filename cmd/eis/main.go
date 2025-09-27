@@ -23,13 +23,13 @@ func main() {
 	flagHost := flag.String("host", ":8080", "server host")
 	flag.Parse()
 
-	dsn := os.Getenv(EnvDSN)
-	if flagDSN != nil {
+	dsn, dsnOK := os.LookupEnv(EnvDSN)
+	if !dsnOK && flagDSN != nil {
 		dsn = *flagDSN
 	}
 
-	host := os.Getenv(EnvHost)
-	if flagHost != nil {
+	host, hostOK := os.LookupEnv(EnvHost)
+	if !hostOK && flagHost != nil {
 		host = *flagHost
 	}
 
