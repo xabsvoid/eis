@@ -1,22 +1,32 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
 	"github.com/xabsvoid/eis/internal/app/domain/service"
-	"github.com/xabsvoid/eis/internal/app/infrastructure/database/inmem"
+	"github.com/xabsvoid/eis/internal/app/infrastructure/database/postgres"
 	"github.com/xabsvoid/eis/internal/app/infrastructure/transport/http"
 )
 
 func main() {
+	dsn := flag.String("dsn", "postgres://user:pwd@host:5432/db", "dsn db")
 	host := flag.String("host", ":8080", "server host")
 	flag.Parse()
 
-	inMemRepository := inmem.NewInMem()
+	ctx := context.Background()
 
-	appService := service.NewService(inMemRepository)
+	conn, err := pgx.Connect(ctx, *dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	repository := postgres.NewPostgres(conn)
+
+	appService := service.NewService(repository)
 
 	httpHandlers := http.NewHandlers(appService)
 
@@ -24,7 +34,7 @@ func main() {
 
 	http.RegisterHandlers(httpServer, httpHandlers)
 
-	err := httpServer.Start(*host)
+	err = httpServer.Start(*host)
 	if err != nil {
 		log.Fatal(err)
 	}
